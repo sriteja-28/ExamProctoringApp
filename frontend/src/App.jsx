@@ -10,6 +10,7 @@ import ExamSchedule from './pages/ExamSchedule';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
+import ActivationRequired from './pages/ActivationRequired';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/exam/:id" element={<ProtectedRoute><Exam /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/superadmin" element={<ProtectedRoute><SuperAdminDashboard /></ProtectedRoute>} />
+        <Route path="/activation-required" element={<ActivationRequired />} />
       </Routes>
       <Footer />
     </>

@@ -32,6 +32,14 @@ const Login = () => {
       const data = await login(email, password);
       if (data.token) {
         const decoded = jwtDecode(data.token);
+
+        if (!decoded.isActive) {
+          setError('Your account is not active. Please contact support for activation.');
+          navigate('/activation-required');
+          return;
+        }
+        
+
         if (decoded.role === 'ADMIN') navigate('/admin');
         else if (decoded.role === 'SUPER_ADMIN') navigate('/superadmin');
         else navigate('/dashboard');
@@ -39,7 +47,11 @@ const Login = () => {
         setError('No token received.');
       }
     } catch (err) {
-      setError('Login failed');
+      if (err.response && err.response.status === 403) {
+        navigate('/activation-required');
+      } else {
+        setError('Login failed');
+      }
     }
   };
 

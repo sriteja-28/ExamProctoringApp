@@ -8,7 +8,7 @@ const Exam = () => {
   const { id: examId } = useParams();
   const navigate = useNavigate();
 
-  // State variables
+  
   const [examStarted, setExamStarted] = useState(false);
   const [examSubmitted, setExamSubmitted] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -20,14 +20,14 @@ const Exam = () => {
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [examName, setExamName] = useState('Exam'); // Default name
 
-  // Format seconds into mm:ss
+ 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  // Timer countdown effect
+
   useEffect(() => {
     if (examStarted && timer > 0 && !examCancelled) {
       const interval = setInterval(() => setTimer(prev => prev - 1), 1000);
@@ -37,7 +37,7 @@ const Exam = () => {
     }
   }, [examStarted, timer, examCancelled]);
 
-  // Detect tab switches and cancel exam if exceeding threshold
+  
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -56,7 +56,7 @@ const Exam = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [navigate]);
 
-  // Fetch exam details when exam starts
+  
   useEffect(() => {
     if (examStarted) {
       setLoadingQuestions(true);
@@ -75,18 +75,18 @@ const Exam = () => {
     }
   }, [examStarted, examId]);
 
-  // Permissions callback from VideoProctor
+  
   const handlePermissions = (granted) => {
     console.log(`Permissions granted: ${granted}`);
     setPermissionsGranted(granted);
   };
 
-  // Record an answer selection
+  
   const handleAnswer = (questionId, selectedOption) => {
     setAnswers(prev => ({ ...prev, [questionId]: selectedOption }));
   };
 
-  // Start exam handler
+ 
   const handleStartExam = async () => {
     try {
       await examService.registerExam(examId);
@@ -97,7 +97,7 @@ const Exam = () => {
     }
   };
 
-  // Submit exam handler
+ 
   const handleSubmit = async () => {
     if (loadingQuestions || questionSet.length === 0) {
       alert('Questions are still loading. Please wait.');
@@ -120,7 +120,6 @@ const Exam = () => {
 
   return (
     <Container>
-      {/* Sticky Header Bar */}
       {examStarted && (
         <Box sx={{
           position: 'fixed',
@@ -138,7 +137,6 @@ const Exam = () => {
           <Typography variant="h6">{examName}</Typography>
           <Typography variant="h6">Time Remaining: {formatTime(timer)}</Typography>
           <Box sx={{ width: '150px', height: '80px' }}>
-            {/* For the sticky header, we render a small video (permissions are assumed already granted) */}  
             <VideoProctor onPermissionsGranted={() => {}} />
           </Box>
         </Box>

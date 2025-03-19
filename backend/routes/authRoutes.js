@@ -10,9 +10,20 @@ router.post('/login', authController.login);
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
-  const token = jwt.sign({ id: req.user.id, role: req.user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
-  res.redirect(`http://localhost:5173/?token=${token}`);
-});
+router.get('/google/callback', 
+  passport.authenticate('google', { session: false }),
+  (req, res) => {
+    if (!req.user.isActive) {
+      return res.redirect('http://localhost:5173/activation-required');
+    }
+    const token = jwt.sign(
+      { id: req.user.id, role: req.user.role, isActive: req.user.isActive },
+      process.env.JWT_SECRET,
+      { expiresIn: '3h' }
+    );
+    res.redirect(`http://localhost:5173/?token=${token}`);
+  }
+);
+
 
 module.exports = router;

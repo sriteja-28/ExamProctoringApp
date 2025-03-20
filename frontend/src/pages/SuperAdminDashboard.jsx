@@ -268,13 +268,53 @@ const SuperAdminDashboard = () => {
     <Container>
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4">Super Admin Dashboard</Typography>
-        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
-          <Tab label="Categories" />
-          <Tab label="Test Submissions" />
-          <Tab label="Manage Exams" />
-          <Tab label="Set Questions" />
-          <Tab label="Question Cards" />
-          <Tab label="Bulk Upload" />
+        <Tabs
+          value={activeTab}
+          onChange={(e, newValue) => setActiveTab(newValue)}
+          sx={{
+            backgroundColor: "#f5f5f5",
+            color: "red",
+            "& .MuiTabs-indicator": {
+              backgroundColor: "darkcyan",
+            },
+          }}
+        >
+          <Tab label="Categories" sx={{
+            color: activeTab === 0 ? "#C71585" : "black",  
+            "&.Mui-selected": { color: "#ef3317" }, 
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
+          <Tab label="Test Submissions" sx={{
+            color: activeTab === 1 ? "#C71585" : "black",
+            "&.Mui-selected": { color: "#ef3317" },
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
+          <Tab label="Manage Exams" sx={{
+            color: activeTab === 2 ? "#C71585" : "black",
+            "&.Mui-selected": { color: "#ef3317" },
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
+          <Tab label="Set Questions" sx={{
+            color: activeTab === 3 ? "#C71585" : "black",
+            "&.Mui-selected": { color: "#ef3317" },
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
+          <Tab label="Question Cards" sx={{
+            color: activeTab === 4 ? "#C71585" : "black",
+            "&.Mui-selected": { color: "#ef3317" },
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
+          <Tab label="Bulk Upload" sx={{
+            color: activeTab === 5 ? "#C71585" : "black",
+            "&.Mui-selected": { color: "#ef3317" },
+            fontWeight: "bold",
+            fontSize: "1rem",
+          }} />
         </Tabs>
 
         {activeTab === 0 && (
@@ -313,6 +353,7 @@ const SuperAdminDashboard = () => {
             setExamNumberOfSets={setExamNumberOfSets}
             examQuestionsPerSet={examQuestionsPerSet}
             setExamQuestionsPerSet={setExamQuestionsPerSet}
+            refreshExams={fetchExams}
           />
         )}
 
@@ -357,8 +398,8 @@ const SuperAdminDashboard = () => {
         {activeTab === 5 && (
           <BulkUploadQuestionsTab
             selectedCategory={selectedBulkCategory}
-            setSelectedCategory={setSelectedBulkCategory} 
-            categories={categories}/>
+            setSelectedCategory={setSelectedBulkCategory}
+            categories={categories} />
         )}
       </Box>
     </Container>

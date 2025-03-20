@@ -46,8 +46,8 @@ app.use('/api/superadmin', superAdminRoutes);
 app.use('/api/exams', examRoutes);
 
 const PORT = process.env.PORT || 5000;
-//sequelize.sync({ force: false }).then(() => {
-  sequelize.sync({ alter: true }).then(() => { 
+sequelize.sync({ force: false }).then(() => {
+  // sequelize.sync({ alter: true }).then(() => { 
   http.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });

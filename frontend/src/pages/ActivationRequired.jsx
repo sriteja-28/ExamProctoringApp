@@ -9,6 +9,10 @@ const ActivationRequired = () => {
     window.open('mailto:support@example.com?subject=Account Activation', '_blank');
   };
 
+  // const handleContactSupport = () => {
+  //   window.open('https://mail.google.com/mail/?view=cm&fs=1&to=support@example.com&su=Account%20Activation', '_blank');
+  // };
+
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 8, textAlign: 'center' }}>

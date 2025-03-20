@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/db');
 
-// Import models from subfolders
+
 const User = require('./category/user')(sequelize, Sequelize.DataTypes);
 const Category = require('./category.js')(sequelize, Sequelize.DataTypes);
 const Question = require('./category/question')(sequelize, Sequelize.DataTypes);
@@ -11,24 +11,24 @@ const ExamAttempt = require('./category/examAttempt')(sequelize, Sequelize.DataT
 //! Define associations
 
 // Category <-> Question
-Category.hasMany(Question, { foreignKey: 'categoryId' });
+Category.hasMany(Question, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
 Question.belongsTo(Category, { foreignKey: 'categoryId' });
 
 // User <-> ExamAttempt
-User.hasMany(ExamAttempt, { foreignKey: 'userId' });
+User.hasMany(ExamAttempt, { foreignKey: 'userId', onDelete: 'CASCADE' });
 ExamAttempt.belongsTo(User, { foreignKey: 'userId' });
 
 // Exam <-> ExamAttempt
-Exam.hasMany(ExamAttempt, { foreignKey: 'examId' });
+Exam.hasMany(ExamAttempt, { foreignKey: 'examId', onDelete: 'CASCADE' });
 ExamAttempt.belongsTo(Exam, { foreignKey: 'examId' });
 
-
 // Category <-> Exam
-Category.hasMany(Exam, { foreignKey: 'categoryId' });
+Category.hasMany(Exam, { foreignKey: 'categoryId', onDelete: 'CASCADE' });
 Exam.belongsTo(Category, { foreignKey: 'categoryId' });
 
 // Exam <-> Question (using examId)
-Exam.hasMany(Question, { as: 'questions', foreignKey: 'examId' });
+
+Exam.hasMany(Question, { as: 'questions', foreignKey: 'examId', onDelete: 'SET NULL' });
 Question.belongsTo(Exam, { as: 'exam', foreignKey: 'examId' });
 
 module.exports = { sequelize, User, Category, Question, Exam, ExamAttempt };

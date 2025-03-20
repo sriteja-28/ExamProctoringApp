@@ -6,6 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     date: { type: DataTypes.DATE, allowNull: false },
     numberOfSets: { type: DataTypes.INTEGER, allowNull: false },
     questionsPerSet: { type: DataTypes.INTEGER, allowNull: false }
+  }, {
+    tableName: 'exams' 
   });
 
   Exam.associate = models => {

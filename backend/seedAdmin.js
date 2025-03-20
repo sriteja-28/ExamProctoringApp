@@ -9,11 +9,13 @@ const seedAdmin = async () => {
       console.log('Admin already exists.');
       process.exit(0);
     }
+
     const admin = await User.create({
-      email: 'admin@example.com',
-      password: 'admin',
+      email: process.env.Admin_Email,
+      password: process.env.Admin_Password,
       role: 'ADMIN'
     });
+
     console.log('Admin created:', admin.email);
     process.exit(0);
   } catch (error) {
@@ -23,3 +25,4 @@ const seedAdmin = async () => {
 };
 
 seedAdmin();
+

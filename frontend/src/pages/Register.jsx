@@ -22,13 +22,20 @@ const Register = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 8 }}>
-        <Typography variant="h4" component="h1" gutterBottom>Register</Typography>
+        <Typography variant="h4" component="h1" sx={{
+          color: "#0B5A72"
+        }} gutterBottom>Register</Typography>
         <form onSubmit={handleSubmit}>
           <TextField label="Email" variant="outlined" fullWidth margin="normal" value={email} onChange={e => setEmail(e.target.value)} required />
           <TextField label="Password" type="password" variant="outlined" fullWidth margin="normal" value={password} onChange={e => setPassword(e.target.value)} required />
           {error && <Typography color="error">{error}</Typography>}
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Register</Button>
-          <Button component={Link} to="/" fullWidth sx={{ mt: 2 }}>Back to Login</Button>
+          <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
+            Already have an account?{" "}
+            <Button component={Link} to="/" sx={{ textTransform: "none", p: 0 }}>
+              Click here to login
+            </Button>
+          </Typography>
         </form>
       </Box>
     </Container>

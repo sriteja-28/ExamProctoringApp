@@ -13,12 +13,12 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ px: { xs: 1, sm: 2 } }}>
+    <AppBar position="static" sx={{ px: { xs: 1, sm: 2,backgroundColor:'#0B5A72' } }}>
       <Toolbar>
         <Typography 
           variant="h6" 
           component="div" 
-          sx={{ 
+          sx={{
             flexGrow: 1, 
             fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' } 
           }}
@@ -28,7 +28,7 @@ const Header = () => {
         {auth.token ? (
           <Button 
             color="inherit" 
-            sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+            sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem',backgroundColor:'#FF2400' } }}
             onClick={handleLogout}
           >
             Logout
@@ -36,7 +36,7 @@ const Header = () => {
         ) : (
           <Button 
             color="inherit" 
-            sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+            sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem',backgroundColor:'#FF2400' } }}
             component={Link} 
             to="/"
           >

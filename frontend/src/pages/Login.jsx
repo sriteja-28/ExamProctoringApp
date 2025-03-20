@@ -3,6 +3,7 @@ import { Button, TextField, Container, Typography, Box } from '@mui/material';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import { Google } from "@mui/icons-material";
 
 const Login = () => {
   const { login, auth } = useContext(AuthContext);
@@ -38,7 +39,7 @@ const Login = () => {
           navigate('/activation-required');
           return;
         }
-        
+
 
         if (decoded.role === 'ADMIN') navigate('/admin');
         else if (decoded.role === 'SUPER_ADMIN') navigate('/superadmin');
@@ -58,9 +59,17 @@ const Login = () => {
   return (
     <Container maxWidth="sm">
       <Box sx={{ mt: 8 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            color: "#0B5A72"
+          }}
+          gutterBottom
+        >
           Login
         </Typography>
+
         <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
@@ -85,14 +94,18 @@ const Login = () => {
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
             Login
           </Button>
-          <Button component={Link} to="/register" fullWidth sx={{ mt: 2 }}>
-            Register
-          </Button>
+          <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
+            Don't have an account?{" "}
+            <Button component={Link} to="/register" sx={{ textTransform: "none", p: 0 }}>
+              Click here to register
+            </Button>
+          </Typography>
           <Button
             variant="outlined"
             fullWidth
-            sx={{ mt: 2 }}
+            sx={{ mt: 2, display: "flex", alignItems: "center", justifyContent: "center" }}
             href="http://localhost:5000/api/auth/google"
+            startIcon={<Google />}
           >
             Sign in with Google
           </Button>

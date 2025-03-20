@@ -17,6 +17,7 @@ exports.getAllExams = async (req, res) => {
   }
 };
 
+
 exports.createExam = async (req, res) => {
   try {
     let { name, categoryId, duration, date, numberOfSets, questionsPerSet } = req.body;
@@ -60,7 +61,7 @@ exports.createExam = async (req, res) => {
     const selectedQuestions = availableQuestions
       .sort(() => 0.5 - Math.random())
       .slice(0, numberOfSets * questionsPerSet);
-    await newExam.setQuestions(selectedQuestions); // Associate questions with exam
+    await newExam.setQuestions(selectedQuestions); 
 
     res.status(201).json({ message: 'Exam created successfully', exam: newExam });
   } catch (error) {

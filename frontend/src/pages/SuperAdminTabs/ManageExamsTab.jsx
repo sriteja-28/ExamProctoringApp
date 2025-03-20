@@ -16,6 +16,7 @@ import {
   Snackbar,
 } from '@mui/material';
 import axios from 'axios';
+import StyledTableCell from '../../context/StyledTableCell';
 
 const ManageExamsTab = ({
   exams,
@@ -107,39 +108,81 @@ const ManageExamsTab = ({
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  const handleScheduleExam = () => {
+  const handleScheduleExam = async () => {
     if (!examName.trim()) {
       alert("Exam name is required.");
       return;
     }
+
+    if (exams.some(exam => exam.name.trim().toLowerCase() === examName.trim().toLowerCase())) {
+      alert("An exam with this name already exists. Please choose a different name.");
+      return;
+    }
+
     const selectedDate = new Date(examDate);
     if (selectedDate <= new Date()) {
       alert("Exam date & time must be in the future.");
       return;
     }
+
     if (Number(examDuration) < 20) {
       alert("Exam duration must be at least 20 minutes.");
       return;
     }
+
     if (Number(examDuration) > 180) {
       alert("Exam duration should be less than 3Hrs (Max 180 minutes only).");
       return;
     }
+
     if (Number(examNumberOfSets) < 1) {
       alert("There must be at least 1 set.");
       return;
     }
+
     if (Number(examQuestionsPerSet) < 1) {
       alert("There must be at least 1 question per set.");
       return;
     }
-    
-    scheduleExam();
-    setSnackbarMsg('Exam scheduled successfully.');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
 
+    //!Under Testing
+    // const numSets = Number(examNumberOfSets);
+    // const numQuestionsPerSet = Number(examQuestionsPerSet);
+    // const totalRequired = numSets * numQuestionsPerSet;
+
+
+    // const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
+    // if (!selectedCategoryObj) {
+    //   alert("Selected category not found.");
+    //   return;
+    // }
+
+    // const availableQuestions = selectedCategoryObj["count(*)"];
+    // if (!availableQuestions || isNaN(availableQuestions)) {
+    //   console.error("Invalid available questions value:", selectedCategoryObj.totalQuestions);
+    //   alert("Available questions for the selected category is invalid.");
+    //   return;
+    // }
+
+    // if (totalRequired > availableQuestions) {
+    //   alert(
+    //     `Total questions required (${totalRequired}) exceeds the available questions (${availableQuestions}) in this category.`
+    //   );
+    //   return;
+    // }
+
+    try {
+      await scheduleExam();
+      setSnackbarMsg('Exam scheduled successfully.');
+      setSnackbarSeverity('success');
+    } catch (error) {
+      console.error("Error scheduling exam:", error);
+      setSnackbarMsg('Failed to schedule exam. Please try again.');
+      setSnackbarSeverity('error');
+    }
+    setSnackbarOpen(true);
   };
+
 
   return (
     <Box sx={{ my: 2 }}>
@@ -207,15 +250,15 @@ const ManageExamsTab = ({
       <Typography variant="h6" sx={{ mt: 3 }}>Scheduled Exams</Typography>
       <Table sx={{ mt: 2 }}>
         <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Duration</TableCell>
-            <TableCell>Date & Time</TableCell>
-            <TableCell>Number of Sets</TableCell>
-            <TableCell>No of Questions</TableCell>
-            <TableCell>Actions</TableCell>
+          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>Category</StyledTableCell>
+            <StyledTableCell>Duration</StyledTableCell>
+            <StyledTableCell>Date & Time</StyledTableCell>
+            <StyledTableCell>Number of Sets</StyledTableCell>
+            <StyledTableCell>No of Questions</StyledTableCell>
+            <StyledTableCell>Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

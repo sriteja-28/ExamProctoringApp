@@ -27,15 +27,17 @@ router.put('/categories/:id', categoryController.updateCategory);
 router.delete('/categories/:id', categoryController.deleteCategory);
 router.get('/categories', categoryController.listCategories);
 
+
 //! Question routes.
 router.post('/questions', questionController.createQuestion);
 router.get('/questions/:categoryId', questionController.listQuestionsByCategory);
 router.put('/questions/:id', questionController.updateQuestion);    
 router.delete('/questions/:id', questionController.deleteQuestion);
+router.delete('/questions/category/:categoryId', questionController.deleteAllQuestions);
+
 
 //! Bulk questions upload endpoint.
 router.post('/questions/bulk', questionController.bulkCreateQuestions);
-
 
 
 //! Exam routes.

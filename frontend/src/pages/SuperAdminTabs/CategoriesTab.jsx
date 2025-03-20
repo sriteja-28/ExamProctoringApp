@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, TextField, Button, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import StyledTableCell from '../../context/StyledTableCell';
 
 const CategoriesTab = ({
   categories,
@@ -29,10 +30,10 @@ const CategoriesTab = ({
       </Box>
       <Table sx={{ mt: 2 }}>
         <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Actions</TableCell>
+          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <StyledTableCell>Id</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

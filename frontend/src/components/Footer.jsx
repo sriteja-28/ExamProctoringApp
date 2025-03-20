@@ -10,7 +10,8 @@ const Footer = () => {
         p: { xs: 1, sm: 2 },
         textAlign: 'center',
         borderTop: '1px solid #ccc',
-        mt: { xs: 2, sm: 4 }
+        mt: { xs: 2, sm: 4 },
+        backgroundColor:'#00536d',
       }}
     >
       <Typography

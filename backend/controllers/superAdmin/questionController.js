@@ -100,6 +100,22 @@ exports.updateQuestion = async (req, res) => {
   }
 };
 
+exports.deleteAllQuestions = async (req, res) => {
+  let { categoryId } = req.params;
+  categoryId = parseInt(categoryId, 10);
+  if (isNaN(categoryId)) {
+    return res.status(400).json({ message: 'Invalid category ID' });
+  }
+  try {
+    await Question.destroy({ where: { categoryId } });
+    return res.status(200).json({ message: 'All questions deleted successfully for this category' });
+  } catch (error) {
+    console.error("Error in deleteAllQuestions:", error.stack);
+    return res.status(500).json({ message: 'Error deleting all questions', error: error.message });
+  }
+};
+
+
 
 //!Bulk Upload worked
 exports.bulkCreateQuestions = async (req, res) => {

@@ -67,3 +67,4 @@ exports.deleteCategory = async (req, res) => {
     res.status(500).json({ message: 'Error deleting category', error: error.message });
   }
 };
+

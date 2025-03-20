@@ -189,6 +189,7 @@ const SuperAdminDashboard = () => {
       fetchExams();
     } catch (error) {
       console.error('Error scheduling exam:', error);
+      throw error;
     }
   };
 
@@ -280,37 +281,37 @@ const SuperAdminDashboard = () => {
           }}
         >
           <Tab label="Categories" sx={{
-            color: activeTab === 0 ? "#C71585" : "black",  
+            color: activeTab === 0 ? "#C71585" : "#0B5A72",  
             "&.Mui-selected": { color: "#ef3317" }, 
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
           <Tab label="Test Submissions" sx={{
-            color: activeTab === 1 ? "#C71585" : "black",
+            color: activeTab === 1 ? "#C71585" : "#0B5A72",
             "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
           <Tab label="Manage Exams" sx={{
-            color: activeTab === 2 ? "#C71585" : "black",
+            color: activeTab === 2 ? "#C71585" : "#0B5A72",
             "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
           <Tab label="Set Questions" sx={{
-            color: activeTab === 3 ? "#C71585" : "black",
+            color: activeTab === 3 ? "#C71585" : "#0B5A72",
             "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
           <Tab label="Question Cards" sx={{
-            color: activeTab === 4 ? "#C71585" : "black",
+            color: activeTab === 4 ? "#C71585" : "#0B5A72",
             "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
           <Tab label="Bulk Upload" sx={{
-            color: activeTab === 5 ? "#C71585" : "black",
+            color: activeTab === 5 ? "#C71585" : "#0B5A72",
             "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
@@ -392,6 +393,7 @@ const SuperAdminDashboard = () => {
             cancelEditing={cancelEditing}
             updateQuestion={updateQuestion}
             deleteQuestion={deleteQuestion}
+            setCardQuestions={setCardQuestions}
           />
         )}
 

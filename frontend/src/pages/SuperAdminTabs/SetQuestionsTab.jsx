@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, FormControl, InputLabel, Select, MenuItem, TextField, Button, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
+import StyledTableCell from '../../context/StyledTableCell';
 
 const SetQuestionsTab = ({
   categories,
@@ -62,14 +63,14 @@ const SetQuestionsTab = ({
       <Typography variant="h6" sx={{ mt: 3 }}>Questions for Selected Category</Typography>
       <Table sx={{ mt: 2 }}>
         <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Question</TableCell>
-            <TableCell>Option A</TableCell>
-            <TableCell>Option B</TableCell>
-            <TableCell>Option C</TableCell>
-            <TableCell>Option D</TableCell>
-            <TableCell>Correct Answer</TableCell>
+           <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+            <StyledTableCell>ID</StyledTableCell>
+            <StyledTableCell>Question</StyledTableCell>
+            <StyledTableCell>Option A</StyledTableCell>
+            <StyledTableCell>Option B</StyledTableCell>
+            <StyledTableCell>Option C</StyledTableCell>
+            <StyledTableCell>Option D</StyledTableCell>
+            <StyledTableCell>Correct Answer</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

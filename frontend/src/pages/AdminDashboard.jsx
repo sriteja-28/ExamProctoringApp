@@ -15,6 +15,7 @@ import {
   MenuItem
 } from '@mui/material';
 import axios from 'axios';
+import StyledTableCell from '../context/StyledTableCell';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -28,7 +29,6 @@ const AdminDashboard = () => {
       .catch(err => console.error(err));
   }, []);
 
-  // Disable actions for admin users
   const toggleUserStatus = (id, currentStatus, role) => {
     if (role === 'ADMIN') return; // Prevent toggling admin status.
     axios.patch(`http://localhost:5000/api/admin/users/${id}/status`, { isActive: !currentStatus }, {
@@ -69,12 +69,12 @@ const AdminDashboard = () => {
         <Typography variant="h4">Admin Dashboard</Typography>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Update Role</TableCell>
-              <TableCell>Action</TableCell>
+             <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
+              <StyledTableCell>Email</StyledTableCell>
+              <StyledTableCell>Role</StyledTableCell>
+              <StyledTableCell>Status</StyledTableCell>
+              <StyledTableCell>Update Role</StyledTableCell>
+              <StyledTableCell>Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

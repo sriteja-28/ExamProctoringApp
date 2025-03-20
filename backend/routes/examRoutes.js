@@ -6,6 +6,7 @@ const permit = require('../middleware/roles');
 const superAdminExamController = require('../controllers/superAdmin/examController');
 const examController = require('../controllers/examController');
 
+
 router.use(authenticateToken);
 
 //! Superadmin Endpoints

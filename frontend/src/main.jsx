@@ -7,7 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 const queryParams = new URLSearchParams(window.location.search);
 const token = queryParams.get('token');
 if (token) {
-  console.log('Token received from Google OAuth:', token);
+  //console.log('Token received from Google OAuth:', token);
   localStorage.setItem('token', token);
   window.history.replaceState({}, document.title, "/");
 }

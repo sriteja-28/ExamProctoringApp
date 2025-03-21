@@ -34,10 +34,11 @@ exports.login = async (req, res) => {
     }
     
     const token = jwt.sign(
-      { id: user.id, role: user.role, isActive: user.isActive },
+      { id: user.id, email: user.email, role: user.role, isActive: user.isActive },
       process.env.JWT_SECRET,
       { expiresIn: '3h' }
     );
+    
     res.json({ token });
   } catch (err) {
     console.error("Error in login:", err.stack);

@@ -39,13 +39,16 @@ const Exam = () => {
 
   
   useEffect(() => {
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = async () => {
       if (document.hidden) {
         setTabSwitchCount(prevCount => {
           const newCount = prevCount + 1;
           alert(`Warning: Do not switch tabs during the exam! (${newCount}/3)`);
           if (newCount >= 3) {
             alert("Exam cancelled due to excessive tab switching.");
+            setExamCancelled(true);
+            examService.cancelExam(examId, { status: "cancelled" })
+              .catch(error => console.error('Error cancelling exam:', error));
             navigate('/dashboard');
           }
           return newCount;
@@ -54,7 +57,8 @@ const Exam = () => {
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, [navigate]);
+  }, [examId, navigate]);
+
 
   
   useEffect(() => {
@@ -103,10 +107,21 @@ const Exam = () => {
       alert('Questions are still loading. Please wait.');
       return;
     }
-    if (Object.keys(answers).length === 0) {
-      alert('No answers selected. Please answer the questions before submitting.');
+
+    const unansweredQuestions = questionSet.filter(question => !answers[question.id]);
+    if (unansweredQuestions.length > 0) {
+      if (unansweredQuestions.length === 1) {
+        const questionNumber = questionSet.indexOf(unansweredQuestions[0]) + 1;
+        alert(`Please answer question number ${questionNumber} to submit.`);
+      } else {
+        const questionNumbers = unansweredQuestions
+          .map(question => questionSet.indexOf(question) + 1)
+          .join(', ');
+        alert(`Please answer questions number ${questionNumbers} to submit.`);
+      }
       return;
     }
+
     try {
       await examService.submitExam(examId, { answers, score: 0 });
       alert('Exam submitted successfully!');

@@ -11,6 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import ActivationRequired from './pages/ActivationRequired';
+import Submissions from './pages/Submissions';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/exam-schedule" element={<ProtectedRoute><ExamSchedule /></ProtectedRoute>} />
+        <Route path="/submissions" element={<ProtectedRoute><Submissions /></ProtectedRoute>} />
         <Route path="/exam/:id" element={<ProtectedRoute><Exam /></ProtectedRoute>} />
         <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/superadmin" element={<ProtectedRoute><SuperAdminDashboard /></ProtectedRoute>} />

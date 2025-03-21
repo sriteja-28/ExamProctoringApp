@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, Tabs, Tab } from '@mui/material';
+import React, { useEffect, useState ,useCallback } from 'react';
+import { Container, Typography, Box, Tabs, Tab ,CircularProgress, Alert} from '@mui/material';
 import axios from 'axios';
 
 import CategoriesTab from './SuperAdminTabs/CategoriesTab';
@@ -50,9 +50,13 @@ const SuperAdminDashboard = () => {
   });
 
   const [selectedBulkCategory, setSelectedBulkCategory] = useState('');
-
+  const [categoryQuestionCount, setCategoryQuestionCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const fetchCategories = async () => {
+    setLoading(true);
+    setError('');
     try {
       const res = await axios.get('http://localhost:5000/api/superadmin/categories', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -60,10 +64,17 @@ const SuperAdminDashboard = () => {
       setCategories(res.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
+      setError('Failed to load categories. Please try again later.');
+
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   const fetchExams = async () => {
+    setLoading(true);
+    setError('');
     try {
       const res = await axios.get('http://localhost:5000/api/superadmin/exams', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -74,11 +85,16 @@ const SuperAdminDashboard = () => {
         setExams([]);
       } else {
         console.error('Error fetching exams:', error);
+        setError('Failed to load exams. Please try again later.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchSubmissions = async () => {
+    setLoading(true);
+    setError('');
     try {
       const res = await axios.get('http://localhost:5000/api/superadmin/test-submissions', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -89,11 +105,16 @@ const SuperAdminDashboard = () => {
         setSubmissions([]);
       } else {
         console.error('Error fetching test submissions:', error);
+        setError('Failed to load test submissions. Please try again later.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const fetchQuestions = async (categoryId) => {
+    setLoading(true);
+    setError('');
     try {
       const res = await axios.get(`http://localhost:5000/api/superadmin/questions/${categoryId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -101,17 +122,27 @@ const SuperAdminDashboard = () => {
       setQuestions(res.data);
     } catch (error) {
       console.error('Error fetching questions:', error);
+      setError('Failed to load questions.');
+    }
+    finally {
+      setLoading(false);
     }
   };
 
   const fetchCardQuestions = async (categoryId) => {
+    setLoading(true);
+    setError('');
     try {
       const res = await axios.get(`http://localhost:5000/api/superadmin/questions/${categoryId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       setCardQuestions(res.data);
+      setCategoryQuestionCount(res.data.length);
     } catch (error) {
       console.error('Error fetching card questions:', error);
+      setError('Failed to load card questions.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,21 +150,23 @@ const SuperAdminDashboard = () => {
     fetchCategories();
     fetchExams();
     fetchSubmissions();
-  }, []);
+  }, [fetchCategories, fetchExams, fetchSubmissions]);
 
   useEffect(() => {
     if (activeTab === 3 && selectedQuestionCategory) {
       fetchQuestions(selectedQuestionCategory);
     }
-  }, [activeTab, selectedQuestionCategory]);
+  }, [activeTab, selectedQuestionCategory,fetchQuestions]);
 
   useEffect(() => {
     if (activeTab === 4 && selectedQuestionCategoryForCards) {
       fetchCardQuestions(selectedQuestionCategoryForCards);
     }
-  }, [activeTab, selectedQuestionCategoryForCards]);
+  }, [activeTab, selectedQuestionCategoryForCards, fetchCardQuestions]);
 
   const addCategory = async () => {
+    setLoading(true);
+    setError('');
     try {
       await axios.post('http://localhost:5000/api/superadmin/categories', { name: categoryName }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -142,10 +175,15 @@ const SuperAdminDashboard = () => {
       fetchCategories();
     } catch (error) {
       console.error('Error adding category:', error);
+      setError('Failed to add category.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const updateCategory = async (id) => {
+    setLoading(true);
+    setError('');
     try {
       await axios.put(`http://localhost:5000/api/superadmin/categories/${id}`, { name: editCategoryName }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -155,10 +193,15 @@ const SuperAdminDashboard = () => {
       fetchCategories();
     } catch (error) {
       console.error('Error updating category:', error);
+      setError('Failed to update category.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteCategory = async (id) => {
+    setLoading(true);
+    setError('');
     try {
       await axios.delete(`http://localhost:5000/api/superadmin/categories/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -166,10 +209,15 @@ const SuperAdminDashboard = () => {
       fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
+      setError('Failed to delete category.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const scheduleExam = async () => {
+    setLoading(true);
+    setError('');
     try {
       await axios.post('http://localhost:5000/api/superadmin/exams', {
         name: examName,
@@ -189,11 +237,16 @@ const SuperAdminDashboard = () => {
       fetchExams();
     } catch (error) {
       console.error('Error scheduling exam:', error);
+      setError('Failed to schedule exam.');
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
   const addQuestion = async () => {
+    setLoading(true);
+    setError('');
     try {
       await axios.post('http://localhost:5000/api/superadmin/questions', {
         text: questionText,
@@ -215,10 +268,13 @@ const SuperAdminDashboard = () => {
       fetchQuestions(selectedQuestionCategory);
     } catch (error) {
       console.error('Error adding question:', error);
+      setError('Failed to add question.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const startEditingQuestion = (question) => {
+  const startEditingQuestion = useCallback((question) => {
     setEditingQuestionId(question.id);
     setEditingQuestionData({
       text: question.text,
@@ -228,9 +284,9 @@ const SuperAdminDashboard = () => {
       optionD: question.optionD,
       correctOption: question.correctOption,
     });
-  };
+  }, []);
 
-  const cancelEditing = () => {
+  const cancelEditing = useCallback(() => {
     setEditingQuestionId(null);
     setEditingQuestionData({
       text: '',
@@ -240,9 +296,11 @@ const SuperAdminDashboard = () => {
       optionD: '',
       correctOption: ''
     });
-  };
+  }, []);
 
   const updateQuestion = async (questionId) => {
+    setLoading(true);
+    setError('');
     try {
       await axios.put(`http://localhost:5000/api/superadmin/questions/${questionId}`, editingQuestionData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -251,10 +309,15 @@ const SuperAdminDashboard = () => {
       cancelEditing();
     } catch (error) {
       console.error('Error updating question:', error);
+      setError('Failed to update question.');
+    } finally {
+      setLoading(false);
     }
   };
 
   const deleteQuestion = async (questionId) => {
+    setLoading(true);
+    setError('');
     try {
       await axios.delete(`http://localhost:5000/api/superadmin/questions/${questionId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -262,6 +325,9 @@ const SuperAdminDashboard = () => {
       fetchCardQuestions(selectedQuestionCategoryForCards);
     } catch (error) {
       console.error('Error deleting question:', error);
+      setError('Failed to delete question.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -269,6 +335,9 @@ const SuperAdminDashboard = () => {
     <Container>
       <Box sx={{ mt: 4 }}>
         <Typography variant="h4">Super Admin Dashboard</Typography>
+        {loading && <CircularProgress sx={{ mt: 2 }} />}
+        {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
+
         <Tabs
           value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
@@ -281,8 +350,8 @@ const SuperAdminDashboard = () => {
           }}
         >
           <Tab label="Categories" sx={{
-            color: activeTab === 0 ? "#C71585" : "#0B5A72",  
-            "&.Mui-selected": { color: "#ef3317" }, 
+            color: activeTab === 0 ? "#C71585" : "#0B5A72",
+            "&.Mui-selected": { color: "#ef3317" },
             fontWeight: "bold",
             fontSize: "1rem",
           }} />
@@ -355,6 +424,9 @@ const SuperAdminDashboard = () => {
             examQuestionsPerSet={examQuestionsPerSet}
             setExamQuestionsPerSet={setExamQuestionsPerSet}
             refreshExams={fetchExams}
+            totalQuestions={
+            categories.find(cat => cat.id === selectedCategory)?.totalQuestions || categoryQuestionCount
+          }
           />
         )}
 
@@ -394,6 +466,7 @@ const SuperAdminDashboard = () => {
             updateQuestion={updateQuestion}
             deleteQuestion={deleteQuestion}
             setCardQuestions={setCardQuestions}
+            questionCount={categoryQuestionCount}
           />
         )}
 

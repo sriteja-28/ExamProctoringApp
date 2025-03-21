@@ -1,4 +1,6 @@
 const { Category, Question, Exam } = require('../../models');
+const { fn, col } = require('sequelize');
+
 
 exports.createCategory = async (req, res) => {
   const { name } = req.body;
@@ -17,13 +19,26 @@ exports.createCategory = async (req, res) => {
 
 exports.listCategories = async (req, res) => {
   try {
-    const categories = await Category.findAll();
-    res.json(categories);
+    const categories = await Category.findAll({
+      include: [{
+        model: Question,
+        attributes: []
+      }],
+      attributes: {
+        include: [
+          [fn('COUNT', col('Questions.id')), 'totalQuestions']
+        ]
+      },
+      group: ['Category.id']
+    });
+    res.status(200).json(categories);
   } catch (err) {
     console.error("Error in listCategories:", err.stack);
     res.status(500).json({ message: 'Error fetching categories', error: err.message });
   }
 };
+
+
 
 exports.updateCategory = async (req, res) => {
   const { id } = req.params;

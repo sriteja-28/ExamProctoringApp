@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, FormControl, InputLabel, Select, MenuItem, TextField, Button } from '@mui/material';
 import axios from 'axios';
 
@@ -7,16 +7,28 @@ const QuestionCardsTab = ({
   selectedQuestionCategoryForCards,
   setSelectedQuestionCategoryForCards,
   cardQuestions,
-  setCardQuestions, 
+  setCardQuestions,
   editingQuestionId,
   editingQuestionData,
-  setEditingQuestionData, 
+  setEditingQuestionData,
   startEditingQuestion,
   cancelEditing,
   updateQuestion,
-  deleteQuestion
+  deleteQuestion,
+  questionCount
 }) => {
+  // const [questionCount, setQuestionCount] = useState(0); 
+
   
+  // useEffect(() => {
+  //   if (selectedQuestionCategoryForCards) {
+  //     const count = cardQuestions.length;
+  //     setQuestionCount(count);
+  //   } else {
+  //     setQuestionCount(0);
+  //   }
+  // }, [selectedQuestionCategoryForCards, cardQuestions]);
+
   const handleDeleteAllQuestions = async () => {
     if (!selectedQuestionCategoryForCards) {
       alert("Please select a category first.");
@@ -31,6 +43,7 @@ const QuestionCardsTab = ({
       });
       alert("All questions in this category deleted successfully.");
       setCardQuestions([]);
+      //setQuestionCount(0); 
     } catch (error) {
       console.error("Error deleting all questions:", error);
       alert("Error deleting questions for this category.");
@@ -54,16 +67,24 @@ const QuestionCardsTab = ({
             ))}
           </Select>
         </FormControl>
+
+     
+        {selectedQuestionCategoryForCards && (
+          <Typography variant="body1">
+            Total Questions: <strong>{questionCount}</strong>
+          </Typography>
+        )}
+
         <Button 
           variant="outlined" 
           color="error"
-          disabled={!selectedQuestionCategoryForCards || cardQuestions.length === 0}
+          disabled={!selectedQuestionCategoryForCards || questionCount === 0}
           onClick={handleDeleteAllQuestions}
         >
           Delete All Questions
         </Button>
       </Box>
-      
+
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
         {cardQuestions.length === 0 ? (
           <Typography variant="body1">No questions found.</Typography>

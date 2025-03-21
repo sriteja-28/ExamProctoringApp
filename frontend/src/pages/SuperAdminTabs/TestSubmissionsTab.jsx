@@ -10,6 +10,7 @@ import {
   TableSortLabel, 
   TextField 
 } from '@mui/material';
+import StyledTableCell from '../../context/StyledTableCell';
 
 const headCells = [
   { id: 'id', label: 'ID' },
@@ -105,9 +106,9 @@ const TestSubmissionsTab = ({ submissions }) => {
       </Box>
       <Table sx={{ mt: 2 }}>
         <TableHead>
-          <TableRow>
+          <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
             {headCells.map((headCell) => (
-              <TableCell key={headCell.id}>
+              <StyledTableCell key={headCell.id}>
                 <TableSortLabel
                   active={orderBy === headCell.id}
                   direction={orderBy === headCell.id ? order : 'asc'}
@@ -115,7 +116,7 @@ const TestSubmissionsTab = ({ submissions }) => {
                 >
                   {headCell.label}
                 </TableSortLabel>
-              </TableCell>
+              </StyledTableCell>
             ))}
           </TableRow>
         </TableHead>

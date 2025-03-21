@@ -36,12 +36,15 @@ const ManageExamsTab = ({
   scheduleExam,
   categories,
   refreshExams,
+  totalQuestions
 }) => {
   const [editingExamId, setEditingExamId] = useState(null);
   const [newExamDate, setNewExamDate] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const sortedExams = [...exams].sort((a, b) => new Date(b.date) - new Date(a.date));
+
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -135,41 +138,37 @@ const ManageExamsTab = ({
       return;
     }
 
-    if (Number(examNumberOfSets) < 1) {
+    const numSets = Number(examNumberOfSets);
+    const desiredQuestionsPerSet = Number(examQuestionsPerSet);
+  
+    if (isNaN(numSets) || numSets < 1) {
       alert("There must be at least 1 set.");
       return;
     }
-
-    if (Number(examQuestionsPerSet) < 1) {
+    if (isNaN(desiredQuestionsPerSet) || desiredQuestionsPerSet < 1) {
       alert("There must be at least 1 question per set.");
       return;
     }
+    const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
+    if (!selectedCategoryObj) {
+      alert("Selected category not found.");
+      return;
+    }
 
-    //!Under Testing
-    // const numSets = Number(examNumberOfSets);
-    // const numQuestionsPerSet = Number(examQuestionsPerSet);
-    // const totalRequired = numSets * numQuestionsPerSet;
+    const availableQuestions = Number(selectedCategoryObj.totalQuestions);
+    if (isNaN(availableQuestions)) {
+      alert("The available questions for the selected category is invalid.");
+      return;
+    }
 
-
-    // const selectedCategoryObj = categories.find(cat => cat.id === selectedCategory);
-    // if (!selectedCategoryObj) {
-    //   alert("Selected category not found.");
-    //   return;
-    // }
-
-    // const availableQuestions = selectedCategoryObj["count(*)"];
-    // if (!availableQuestions || isNaN(availableQuestions)) {
-    //   console.error("Invalid available questions value:", selectedCategoryObj.totalQuestions);
-    //   alert("Available questions for the selected category is invalid.");
-    //   return;
-    // }
-
-    // if (totalRequired > availableQuestions) {
-    //   alert(
-    //     `Total questions required (${totalRequired}) exceeds the available questions (${availableQuestions}) in this category.`
-    //   );
-    //   return;
-    // }
+  const maxQuestionsPerSet = Math.floor(availableQuestions / numSets);
+  if (desiredQuestionsPerSet > maxQuestionsPerSet) {
+    alert(
+      `Total questions available in the category is ${availableQuestions}. For ${numSets} sets, the maximum questions per set allowed is ${maxQuestionsPerSet}.`
+    );
+    setExamQuestionsPerSet(maxQuestionsPerSet);
+    return;
+  }
 
     try {
       await scheduleExam();
@@ -262,7 +261,7 @@ const ManageExamsTab = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {exams.map(exam => (
+        {sortedExams.map(exam => (
             <TableRow key={exam.id}>
               <TableCell>{exam.id}</TableCell>
               <TableCell>{exam.name}</TableCell>

@@ -48,10 +48,25 @@ app.use('/api/superadmin', superAdminRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/user', userRoutes);
 
+// const PORT = process.env.PORT || 5000;
+// sequelize.sync({ force: false }).then(() => {
+//   // sequelize.sync({ alter: true }).then(() => { 
+//   http.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//   });
+// });
+
 const PORT = process.env.PORT || 5000;
-sequelize.sync({ force: false }).then(() => {
-  // sequelize.sync({ alter: true }).then(() => { 
-  http.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+
+// Only start the server if this module is the entry point
+if (require.main === module) {
+  sequelize.sync({ force: false }).then(() => {
+    http.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }).catch(err => {
+    console.error("Database sync error:", err);
   });
-});
+}
+
+module.exports = { app, http,io };

@@ -150,7 +150,7 @@ const SuperAdminDashboard = () => {
     fetchCategories();
     fetchExams();
     fetchSubmissions();
-  }, [fetchCategories, fetchExams, fetchSubmissions]);
+  }, []);
 
   useEffect(() => {
     if (activeTab === 3 && selectedQuestionCategory) {

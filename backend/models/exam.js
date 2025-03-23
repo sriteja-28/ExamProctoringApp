@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     duration: { type: DataTypes.INTEGER, allowNull: false },
     date: { type: DataTypes.DATE, allowNull: false },
     numberOfSets: { type: DataTypes.INTEGER, allowNull: false },
-    questionsPerSet: { type: DataTypes.INTEGER, allowNull: false }
+    questionsPerSet: { type: DataTypes.INTEGER, allowNull: false },
+    totalScore: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     tableName: 'exams' 
   });

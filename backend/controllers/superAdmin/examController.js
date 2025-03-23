@@ -47,14 +47,16 @@ exports.createExam = async (req, res) => {
       return res.status(400).json({ message: "Not enough questions in this category" });
     }
 
-    
+    const totalScore = questionsPerSet;
+
     const newExam = await Exam.create({ 
       name, 
       categoryId, 
       duration, 
       date: new Date(date), 
       numberOfSets, 
-      questionsPerSet 
+      questionsPerSet,
+      totalScore
     });
 
     

@@ -13,7 +13,7 @@ exports.getSubmissions = async (req, res) => {
       include: [
         {
           model: Exam,
-          attributes: ['name'],
+          attributes: ['name','totalScore'],
         },
       ],
       order: [['updatedAt', 'DESC']],

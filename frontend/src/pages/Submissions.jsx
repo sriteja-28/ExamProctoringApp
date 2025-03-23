@@ -24,6 +24,7 @@ const Submissions = () => {
               <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
                 <StyledTableCell>Exam Name</StyledTableCell>
                 <StyledTableCell>Score</StyledTableCell>
+                <StyledTableCell>Total Score</StyledTableCell>
                 <StyledTableCell>Date</StyledTableCell>
               </TableRow>
             </TableHead>
@@ -32,6 +33,7 @@ const Submissions = () => {
                 <TableRow key={idx}>
                   <TableCell>{submission.Exam ? submission.Exam.name : 'N/A'}</TableCell>
                   <TableCell>{submission.score}</TableCell>
+                  <TableCell>{submission.Exam ? submission.Exam.totalScore : 'N/A'}</TableCell>
                   <TableCell>{new Date(submission.createdAt).toLocaleString()}</TableCell>
                 </TableRow>
               ))}

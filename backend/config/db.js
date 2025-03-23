@@ -8,7 +8,14 @@ const sequelize = new Sequelize(
   {
     host: process.env.DB_HOST,
     dialect: 'mysql',
-    logging: false,
+    dialectOptions: {
+      charset: 'utf8',
+    },
+    define: {
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
+    },
+    logging: false, 
   }
 );
 

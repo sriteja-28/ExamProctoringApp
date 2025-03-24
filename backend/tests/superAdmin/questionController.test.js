@@ -1,7 +1,7 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const { app } = require('../server');
-const { Question, Category } = require('../models');
+const { app } = require('../../server');
+const { Question, Category } = require('../../models');
 const token = jwt.sign({ id: 1, role: 'SUPER_ADMIN' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 describe('Question API Endpoints', () => {

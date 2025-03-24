@@ -28,6 +28,11 @@ exports.updateUserStatus = async (req, res) => {
 exports.updateUserRole = async (req, res) => {
   const { id } = req.params;
   const { role } = req.body;
+
+  if (parseInt(id, 10) === req.user.id) {
+    return res.status(400).json({ message: 'Admin cannot change his own role' });
+  }
+  
   try {
     const result = await User.update({ role }, { where: { id } });
     console.log("User role update result:", result);

@@ -1,18 +1,34 @@
+// tests/saExamController.test.js
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
-const { app } = require('../server');
-const { Exam, ExamAttempt, Category, Question } = require('../models');
+const { app } = require('../../server'); // Adjust path if necessary
+const { Exam, ExamAttempt, Category, Question, User } = require('../../models');
 
 const token = jwt.sign({ id: 1, role: 'SUPER_ADMIN' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 describe('Exam API Endpoints', () => {
   let category;
+  let dummyUser; // For exam attempts
 
   beforeEach(async () => {
+    // Clean up exams, exam attempts, categories, and dummy user
     await Exam.destroy({ where: {} });
     if (ExamAttempt) await ExamAttempt.destroy({ where: {} });
     await Category.destroy({ where: {} });
+    // Create a category for exams
     category = await Category.create({ name: 'Test Category' });
+    // Create a dummy user for exam attempts
+    dummyUser = await User.create({
+      email: 'dummy@example.com',
+      password: 'dummy123',
+      isActive: true,
+      role: 'USER'
+    });
+  });
+
+  afterEach(async () => {
+    // Clean up dummy user after each test
+    await User.destroy({ where: { email: 'dummy@example.com' } });
   });
 
   describe('POST /api/superadmin/exams', () => {
@@ -50,7 +66,6 @@ describe('Exam API Endpoints', () => {
     });
   });
   
-
   describe('GET /api/superadmin/exams', () => {
     it('should list all exams', async () => {
       await Exam.create({ 
@@ -81,7 +96,7 @@ describe('Exam API Endpoints', () => {
       expect(res.body.length).toBeGreaterThanOrEqual(2);
     });
   });
-
+  
   describe('PUT /api/superadmin/exams/:id', () => {
     it('should update an exam', async () => {
       const exam = await Exam.create({ 
@@ -111,7 +126,7 @@ describe('Exam API Endpoints', () => {
       expect(res.body.exam.name).toBe('Exam Updated');
     });
   });
-
+  
   describe('DELETE /api/superadmin/exams/:id', () => {
     it('should delete an exam', async () => {
       const exam = await Exam.create({ 
@@ -132,7 +147,7 @@ describe('Exam API Endpoints', () => {
       expect(res.body.message).toBe('Exam deleted successfully');
     });
   });
-
+  
   describe('GET /api/superadmin/exam-attempts', () => {
     it('should retrieve all exam attempts', async () => {
       const exam = await Exam.create({ 
@@ -144,12 +159,11 @@ describe('Exam API Endpoints', () => {
         numberOfSets: 2,
         questionsPerSet: 5
       });
-      // Create ExamAttempt with the fields allowed by your model.
+      // Create an exam attempt using allowed fields.
       await ExamAttempt.create({
         examId: exam.id,
-        userId: 2,
+        userId: dummyUser.id,
         score: 80,
-        // Provide status explicitly (default is 'PENDING', but we set it to 'COMPLETED' here)
         status: 'COMPLETED'
       });
       
@@ -161,7 +175,7 @@ describe('Exam API Endpoints', () => {
       expect(Array.isArray(res.body)).toBe(true);
     });
   });
-
+  
   describe('GET /api/superadmin/exam-attempts/:userId', () => {
     it('should retrieve exam attempts for a specific user', async () => {
       const exam = await Exam.create({ 
@@ -175,19 +189,19 @@ describe('Exam API Endpoints', () => {
       });
       await ExamAttempt.create({
         examId: exam.id,
-        userId: 2,
+        userId: dummyUser.id,
         score: 80,
         status: 'COMPLETED'
       });
       
       const res = await request(app)
-        .get('/api/superadmin/exam-attempts/2')
+        .get(`/api/superadmin/exam-attempts/${dummyUser.id}`)
         .set('Authorization', `Bearer ${token}`);
       
       expect(res.status).toBe(200);
       expect(Array.isArray(res.body)).toBe(true);
       res.body.forEach(attempt => {
-        expect(attempt.userId).toBe(2);
+        expect(attempt.userId).toBe(dummyUser.id);
       });
     });
   });

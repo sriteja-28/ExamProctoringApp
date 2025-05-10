@@ -89,6 +89,7 @@ const AdminDashboard = () => {
                     <FormControl size="small" variant="outlined" sx={{ minWidth: 150 }} disabled={isUserAdmin}>
                       <InputLabel>Role</InputLabel>
                       <Select
+                        data-testid={`role-select-${user.id}`}
                         value={roleUpdates[user.id] || ''}
                         onChange={e => setRoleUpdates({ ...roleUpdates, [user.id]: e.target.value })}
                         label="Role"

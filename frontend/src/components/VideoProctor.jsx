@@ -66,6 +66,7 @@ const VideoProctor = ({ onPermissionsGranted = () => {} }) => {
           ref={videoRef}
           autoPlay
           muted
+          data-testid="video-element"
           style={{ width: '100%', maxWidth: '300px', border: '1px solid #ccc' }}
         />
       )}

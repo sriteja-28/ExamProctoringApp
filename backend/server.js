@@ -69,4 +69,11 @@ if (require.main === module) {
   });
 }
 
+//!test
+// Only start the server if this module is the entry point
+// if (require.main === module) {
+//     http.listen(PORT, () => {
+//       console.log(`Server running on port ${PORT}`);
+//     });
+// }
 module.exports = { app, http,io };
